@@ -7,6 +7,54 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="Style.css">
+<style>
+/* ===== GALERIA — sekcja miniaturek ===== */
+.gallery-more-label {
+  text-align: center;
+  margin: 40px 0 18px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.gallery-more-label::before,
+.gallery-more-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,151,42,0.35), transparent);
+}
+.gallery-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.gallery-mini-item {
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  position: relative;
+}
+.gallery-mini-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.gallery-mini-item:hover img { transform: scale(1.07); }
+
+@media (max-width: 900px) {
+  .gallery-mini-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 600px) {
+  .gallery-mini-grid { grid-template-columns: repeat(3, 1fr); gap: 5px; }
+}
+</style>
 </head>
 <body>
 
@@ -164,6 +212,8 @@
     <span class="sec-tag reveal">PORTFOLIO</span>
     <h2 class="sec-title reveal d1">Nasze realizacje</h2>
     <p class="sec-sub reveal d2">Każdy projekt to nowe wyzwanie i pełne zaangażowanie. Zobacz wybrane realizacje z Warszawy i okolic.</p>
+
+    <!-- 6 WYRÓŻNIONYCH z opisem — nie zmieniaj, zdjęcia już są podpięte -->
     <div class="gallery-grid">
       <div class="gallery-item reveal" data-src="Gmail/1000013198.jpg" data-caption="Łazienka • Warszawa Mokotów">
         <div class="gallery-thumb gp1"><div class="gallery-ph"><img src="Gmail/1000013198.jpg" class="gallery-thumb" alt="Łazienka Mokotów"></div></div>
@@ -172,7 +222,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
         </div>
       </div>
-      <div class="gallery-item reveal d1" data-src="Gmail/20240303_211032.jpg" data-caption="Salon • Praga Południe">
+      <div class="gallery-item reveal d1" data-src="Gmail/20240303_211032.jpg" data-caption="Biuro • Praga Południe">
         <div class="gallery-thumb gp2"><div class="gallery-ph"><img src="Gmail/20240303_211032.jpg" class="gallery-thumb" alt="Salon Praga Południe"></div></div>
         <div class="gallery-overlay"><span class="gallery-label">Biuro • Praga Południe</span></div>
         <div class="gallery-zoom-icon">
@@ -208,8 +258,37 @@
         </div>
       </div>
     </div>
+
+    <!-- WIĘCEJ ZDJĘĆ — miniaturki bez opisu -->
+    <!-- Zamień Gmail/zdjecieX.jpg na ścieżki swoich zdjęć -->
+    <!-- Możesz dodawać lub usuwać bloki <div class="gallery-mini-item"> -->
+    <div class="gallery-more-label reveal">Więcej realizacji</div>
+    <div class="gallery-mini-grid">
+      <div class="gallery-mini-item reveal" data-src="Gmail/1000005142.jpg">
+        <img src="Gmail/1000005142.jpg" alt="">
+      </div>
+      <div class="gallery-mini-item reveal d1" data-src="Gmail/1000014438.jpg">
+        <img src="Gmail/1000014438.jpg" alt="">
+      </div>
+      <div class="gallery-mini-item reveal d2" data-src="Gmail/1000014419.jpg">
+        <img src="Gmail/1000014419.jpg" alt="">
+      </div>
+    </div>
+
   </div>
 </section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Zamknij">&times;</button>
+  <button class="lightbox__prev" id="lightboxPrev" aria-label="Poprzednie">&#8249;</button>
+  <button class="lightbox__next" id="lightboxNext" aria-label="Następne">&#8250;</button>
+  <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+  <div class="lightbox__content">
+    <img class="lightbox__img" id="lightboxImg" src="" alt="">
+    <div class="lightbox__caption" id="lightboxCaption"></div>
+  </div>
+</div>
 
 <!-- KONTAKT -->
 <section id="contact">
@@ -255,8 +334,6 @@
             <label>Numer telefonu</label>
             <input type="tel" placeholder="512 345 678" required>
           </div>
-
-          <!-- CUSTOM DROPDOWN — zastępuje <select> -->
           <div class="form-group">
             <label>Rodzaj prac</label>
             <div class="custom-select" id="customSelect">
@@ -272,12 +349,9 @@
                 <li class="custom-select__option" role="option" data-value="Biuro / lokal użytkowy" tabindex="-1">Biuro / lokal użytkowy</li>
                 <li class="custom-select__option" role="option" data-value="Inne" tabindex="-1">Inne</li>
               </ul>
-              <!-- ukryte pole dla formularza -->
               <input type="hidden" name="rodzaj_prac" id="selectHidden" value="">
             </div>
           </div>
-          <!-- KONIEC CUSTOM DROPDOWN -->
-
           <div class="form-group">
             <label>Opis (opcjonalnie)</label>
             <textarea placeholder="Metraż, zakres prac, preferowany termin..."></textarea>
@@ -289,18 +363,6 @@
   </div>
 </section>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia">
-  <button class="lightbox__close" id="lightboxClose" aria-label="Zamknij">&times;</button>
-  <button class="lightbox__prev" id="lightboxPrev" aria-label="Poprzednie">&#8249;</button>
-  <button class="lightbox__next" id="lightboxNext" aria-label="Następne">&#8250;</button>
-  <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
-  <div class="lightbox__content">
-    <img class="lightbox__img" id="lightboxImg" src="" alt="">
-    <div class="lightbox__caption" id="lightboxCaption"></div>
-  </div>
-</div>
-
 <!-- FOOTER -->
 <footer>
   <p>© 2026 MK Solid-Bud. Wszelkie prawa zastrzeżone.</p>
@@ -308,7 +370,7 @@
 </footer>
 
 <script>
-// Hamburger menu
+// ===== HAMBURGER =====
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 hamburger.addEventListener('click', () => {
@@ -320,14 +382,14 @@ function closeMobile() {
   mobileMenu.classList.remove('open');
 }
 
-// Scroll reveal
+// ===== SCROLL REVEAL =====
 const revealEls = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); } });
 }, { threshold: 0.12 });
 revealEls.forEach(el => observer.observe(el));
 
-// Smooth active nav link highlight
+// ===== ACTIVE NAV =====
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
@@ -338,7 +400,7 @@ window.addEventListener('scroll', () => {
   });
 });
 
-// Form handler
+// ===== FORM =====
 function handleForm(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.form-btn');
@@ -349,29 +411,20 @@ function handleForm(e) {
 
 // ===== CUSTOM SELECT =====
 (function() {
-  const selectWrap   = document.getElementById('customSelect');
-  const trigger      = document.getElementById('selectTrigger');
-  const valueLabel   = document.getElementById('selectValue');
-  const list         = document.getElementById('selectList');
-  const hiddenInput  = document.getElementById('selectHidden');
-  const options      = list.querySelectorAll('.custom-select__option');
+  const selectWrap  = document.getElementById('customSelect');
+  const trigger     = document.getElementById('selectTrigger');
+  const valueLabel  = document.getElementById('selectValue');
+  const list        = document.getElementById('selectList');
+  const hiddenInput = document.getElementById('selectHidden');
+  const options     = list.querySelectorAll('.custom-select__option');
 
-  function openList() {
-    selectWrap.classList.add('open');
-    trigger.setAttribute('aria-expanded', 'true');
-    list.removeAttribute('hidden');
-  }
-
-  function closeList() {
-    selectWrap.classList.remove('open');
-    trigger.setAttribute('aria-expanded', 'false');
-  }
+  function openList()  { selectWrap.classList.add('open'); trigger.setAttribute('aria-expanded', 'true'); }
+  function closeList() { selectWrap.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
 
   trigger.addEventListener('click', function(e) {
     e.stopPropagation();
     selectWrap.classList.contains('open') ? closeList() : openList();
   });
-
   options.forEach(function(opt) {
     opt.addEventListener('click', function() {
       const val = opt.getAttribute('data-value');
@@ -383,8 +436,6 @@ function handleForm(e) {
       closeList();
       trigger.focus();
     });
-
-    // Keyboard support
     opt.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); opt.click(); }
       if (e.key === 'Escape') { closeList(); trigger.focus(); }
@@ -392,21 +443,16 @@ function handleForm(e) {
       if (e.key === 'ArrowUp')   { e.preventDefault(); const prev = opt.previousElementSibling; if (prev) prev.focus(); else trigger.focus(); }
     });
   });
-
   trigger.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault(); openList(); options[0].focus();
-    }
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openList(); options[0].focus(); }
     if (e.key === 'Escape') closeList();
   });
-
-  // Zamknij po kliknięciu poza
   document.addEventListener('click', function(e) {
     if (!selectWrap.contains(e.target)) closeList();
   });
 })();
 
-// ===== LIGHTBOX =====
+// ===== LIGHTBOX — obsługuje wyróżnione I miniaturki jako jedna galeria =====
 (function() {
   const lightbox   = document.getElementById('lightbox');
   const lbImg      = document.getElementById('lightboxImg');
@@ -416,8 +462,8 @@ function handleForm(e) {
   const lbNext     = document.getElementById('lightboxNext');
   const lbBackdrop = document.getElementById('lightboxBackdrop');
 
-  // Tylko kafelki z data-src (mają prawdziwe zdjęcie)
-  const items = Array.from(document.querySelectorAll('.gallery-item[data-src]'));
+  // Zbiera WSZYSTKIE zdjęcia: 6 wyróżnionych + miniaturki
+  const items = Array.from(document.querySelectorAll('.gallery-item[data-src], .gallery-mini-item[data-src]'));
   let current = 0;
 
   function show(index) {
@@ -445,7 +491,7 @@ function handleForm(e) {
     setTimeout(function() { lbImg.src = ''; lbImg.classList.remove('loaded'); }, 300);
   }
 
-  // Kliknięcia na kafelki galerii
+  // Kliknięcia na wszystkie elementy galerii
   items.forEach(function(el, i) {
     el.style.cursor = 'pointer';
     el.addEventListener('click', function() { open(i); });
@@ -456,7 +502,6 @@ function handleForm(e) {
   lbPrev.addEventListener('click', function(e) { e.stopPropagation(); show(current - 1); });
   lbNext.addEventListener('click', function(e) { e.stopPropagation(); show(current + 1); });
 
-  // Klawiatura
   document.addEventListener('keydown', function(e) {
     if (!lightbox.classList.contains('open')) return;
     if (e.key === 'Escape')     close();
@@ -464,7 +509,6 @@ function handleForm(e) {
     if (e.key === 'ArrowRight') show(current + 1);
   });
 
-  // Swipe na mobile
   let touchStartX = 0;
   lightbox.addEventListener('touchstart', function(e) {
     touchStartX = e.touches[0].clientX;
